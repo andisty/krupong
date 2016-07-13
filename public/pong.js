@@ -17,6 +17,7 @@ var animate = window.requestAnimationFrame ||
     document.body.appendChild(canvas);
     animate(step);
   };
+
 // IMPORTANT FUNC -Inception- will update all player objects & will render all objects
 //                  and finaly call animate with step function as param to call it again
   var step = function() {
@@ -27,14 +28,14 @@ var animate = window.requestAnimationFrame ||
 
   var update = function() {
   };
+
 // defining color and size of pong playfield
   var render = function() {
     context.fillStyle = "#050404";
     context.fillRect(0,0, width, height);
   };
 
-// adding player object paddle so we can render it
-
+// Players object, paddle so we can render it
   function Paddle(x, y, width, height) {
     this.x = x;
     this.y = y;
@@ -47,4 +48,22 @@ var animate = window.requestAnimationFrame ||
   Paddle.prototype.render = function() {
     context.fillStyle = "#29f709";
     context.fillRect(this.x, this.y, this.width, this.height);
+  };
+
+// defines default position of player paddle on canvas
+  function Player() {
+    this.paddle = new Paddle(175, 580, 50, 10);
+  }
+// defines default position of computer(player) paddle on canvas
+  function Computer() {
+    this.paddle = new Paddle(175, 10, 50, 10);
+  }
+
+// To render player and computer paddle on canvas. Using prototype so player and computer inherit properties from paddle object
+  Player.prototype.render = function() {
+    this.paddle.render();
+  };
+
+  Computer.prototype.render = function() {
+    this.paddle.render();
   };
