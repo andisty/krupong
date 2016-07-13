@@ -27,6 +27,7 @@ var animate = window.requestAnimationFrame ||
   };
 
   var update = function() {
+    player.update();
     ball.update(player.paddle, computer.paddle);
   };
 
@@ -106,7 +107,7 @@ var animate = window.requestAnimationFrame ||
     var top_y = this.y - 5;
     var bottom_x = this.x + 5;
     var bottom_y = this.y + 5;
-
+// addig collison detection so when the ball hits the paddle shit happens!
     if(this.x - 5 < 0) { //ball hitting left wall
       this.x = 5;
       this.x_speed = -this.x_speed;
@@ -134,7 +135,48 @@ var animate = window.requestAnimationFrame ||
       //hit computer paddle
       this.y_speed = 3;
       this.x_speed += (paddle2.x_speed / 2);
-      this.y += this.y_speed; 
+      this.y += this.y_speed;
       }
     }
   };
+
+  // #########################################
+  // ########### Player controls #############
+  // #########################################
+
+  var keysDown = {};
+// adding keyDown object to track key input
+  window.addEventListener("keydown", function(event) {
+    keysDown[event.keyCode] = true;
+  });
+
+  window.addEventListener("keyup", function(event) {
+    delete keysDown[event.keyCode];
+  });
+
+  Player.prototype.update = function() {
+    for(var key in keysDown) {
+      var value = Number(key);
+      if(value == 37) {           //left arrow
+        this.paddle.move(-4, 0);
+      } else if (value == 39) {   //right arrow
+        this.paddle.move(4, 0);
+      } else {
+        this.paddle.move(0, 0);
+      }
+    }
+  };
+
+  Paddle.prototype.move = function(x, y) {
+    this.x += x;
+    this.y += y;
+    this.x_speed = x;
+    this.x_speed = y;
+    if(this.x < 0) { //all the way left
+      this.x = 0;
+      this.x_speed = 0;
+    } else if (this.x + this.width > 400) { //all the way right
+      this.x = 400 - this.width;
+      this.x_speed = 0;
+    }
+  }
