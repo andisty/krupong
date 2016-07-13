@@ -32,3 +32,19 @@ var animate = window.requestAnimationFrame ||
     context.fillStyle = "#050404";
     context.fillRect(0,0, width, height);
   };
+
+// adding player object paddle so we can render it
+
+  function Paddle(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.x_speed = 0;
+    this.y_speed = 0;
+  }
+
+  Paddle.prototype.render = function() {
+    context.fillStyle = "#29f709";
+    context.fillRect(this.x, this.y, this.width, this.height);
+  };
