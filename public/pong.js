@@ -157,8 +157,11 @@ Ball.prototype.render = function () {
        this.y += this.y_speed;
      }
    } else {
-     if (top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y && )
-   }
+     if (top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y && top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.width) && bottom_x > paddle2.x) {
+       this.y_speed = 3;
+       this.x_speed += (paddle2.x_speed / 2);
+       this.y += this.y_speed;
+     }
    }
 };
 
