@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Krupong</title>
-    <script src="pong.js">
+    <script>
       var animate = window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
       window.mozRequestAnimationFrame ||
@@ -13,7 +13,27 @@
       canvas.width = width;
       canvas.height = height;
       var context = canvas.getContext('2d');
-      
+
+      window.onload = function() {
+        document.body.appendChild(canvas);
+        animate(step);
+      };
+
+      var step = function() {
+        update();
+        render();
+        animate(step);
+      };
+
+      var update = function() {
+      };
+
+      var render = function() {
+        context.fillStyle = "#b30000"
+        context.fillRect(0, 0, width, height);
+      };
+
+
     </script>
   </head>
   <body>
