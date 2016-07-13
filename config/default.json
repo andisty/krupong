@@ -1,0 +1,12 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "mongodb": "mongodb://localhost:27017/pongApi",
+  "public": "../public/",
+  "auth": {
+    "token": {
+      "secret": "GWB8M9jJeXJtVCJEja3Kk+2OwNhzVuWv6HO9H/jr9LvZhbLs6+yIuv+1qkQrTvZs54oCG9JmVv149xWvB7fgXA=="
+    },
+    "local": {}
+  }
+}
