@@ -69,3 +69,15 @@ window.onload = function() {
    contextfillStyle = "#000000";
    context.fill();
  };
+
+ var player = new Player();
+ var computer = new Computer();
+ var ball = new Ball(200,300);
+
+ var render = function() {
+   context.fillStyle = "#FF00FF";
+   context.fillRect(0, 0, width, height);
+   player.render();
+   computer.render();
+   ball.render();
+ };
