@@ -1,7 +1,7 @@
 // Function to assure he call the function 60 times per second result: 60fps
 var animate = window.requestAnimationFrame ||
-  window.webkitRequestAnimationFrame ||
-  window.mozRequestAnimationFrame ||
+              window.webkitRequestAnimationFrame ||
+              window.mozRequestAnimationFrame ||
   function(callback) { window.setTimeout(callback, 1000/60) };
 
 // creating canvas
@@ -11,6 +11,9 @@ var animate = window.requestAnimationFrame ||
   canvas.width = width;
   canvas.height = height;
   var context = canvas.getContext('2d');
+  var player = new Player();
+  var computer = new Computer();
+  var ball = new Ball(200,300);
 
 //function to attach canvas to screen when page loads
   window.onload = function() {
@@ -28,6 +31,7 @@ var animate = window.requestAnimationFrame ||
 
   var update = function() {
     player.update();
+    computer.update(ball);
     ball.update(player.paddle, computer.paddle);
   };
 
@@ -153,7 +157,8 @@ var animate = window.requestAnimationFrame ||
   window.addEventListener("keyup", function(event) {
     delete keysDown[event.keyCode];
   });
-
+// player update function so when you press key 37 you go left 39 you move right
+// the number -4 and 4 define how fast you paddle will travel when you pres left or right now it moves 4 on the canvas
   Player.prototype.update = function() {
     for(var key in keysDown) {
       var value = Number(key);
@@ -166,7 +171,7 @@ var animate = window.requestAnimationFrame ||
       }
     }
   };
-
+// paddle move function so when player pressed above defined keys the paddle moves 4 on the canvas
   Paddle.prototype.move = function(x, y) {
     this.x += x;
     this.y += y;
@@ -179,4 +184,24 @@ var animate = window.requestAnimationFrame ||
       this.x = 400 - this.width;
       this.x_speed = 0;
     }
-  }
+  };
+
+  // #########################################
+  // ########### Computer Player #############
+  // #########################################
+
+  Computer.prototype.update =function(ball) {
+    var x_pos = ball.x;
+    var diff = -((this.paddle.x + (this.paddle.width / 2)) - x_pos);
+    if(diff < 0 && diff < -4) { //max speed left for computer player
+      diff = -5;
+    } else if (diff > 0 && diff > 4) { // maxspeed right for computer
+      diff = 5;
+    }
+    this.paddle.move(diff, 0);
+    if(this.paddle.x < 0) {
+      this.paddle.x = 0;
+    } else if (this.paddle.x + this.paddle.width > 400) {
+      this.paddle.x = 400 - this.paddle.width;
+    }
+  };
