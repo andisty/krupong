@@ -27,6 +27,7 @@ var animate = window.requestAnimationFrame ||
   };
 
   var update = function() {
+    ball.update();
   };
 
 // defining color and size of pong playfield
@@ -87,8 +88,17 @@ var animate = window.requestAnimationFrame ||
     context.fillStyle = "#29f709";
     context.fill();
   };
+// adding update method to ball so it can move(animate) towards player
+  Ball.prototype.update = function() {
+    this.x += this.x_speed;
+    this.y += this.y_speed;
+  };
 
 // constructing objects we need for our game
   var player = new Player();
   var computer = new Computer();
   var ball = new Ball(200, 300);
+
+// ###################################
+// ########### Animating #############
+// ###################################
