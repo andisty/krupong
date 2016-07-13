@@ -87,7 +87,7 @@
         context.fill();
       };
 
-      Ball.prototype.update = function() {
+      Ball.prototype.update = function(paddle1, paddle2) {
         this.x += this.x_speed;
         this.y += this.y_speed;
         var top_x = this.x - 5;
@@ -125,7 +125,7 @@
         }
       };
 
-      
+
 
     </script>
   </head>
