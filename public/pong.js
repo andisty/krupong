@@ -33,6 +33,9 @@ var animate = window.requestAnimationFrame ||
   var render = function() {
     context.fillStyle = "#050404";
     context.fillRect(0,0, width, height);
+    player.render();
+    computer.render();
+    ball.render();
   };
 
 // Players object, paddle so we can render it
@@ -67,3 +70,25 @@ var animate = window.requestAnimationFrame ||
   Computer.prototype.render = function() {
     this.paddle.render();
   };
+
+// defining ball object props. x and y are representing center of circle.
+  function Ball(x, y) {
+    this.x = x;
+    this.y = y;
+    this.x_speed = 0;
+    this.y_speed = 3;
+    this.radius = 5;
+  }
+
+// Once again prototype to inherit above defined Ball props
+  Ball.prototype.render = function() {
+    context.beginPath();
+    context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
+    context.fillStyle = "#29f709";
+    context.fill();
+  };
+
+// constructing objects we need for our game
+  var player = new Player();
+  var computer = new Computer();
+  var ball = new Ball(200, 300);
