@@ -11,6 +11,9 @@ var height = 600;
 canvas.width = width;
 canvas.height = height;
 var context = canvas.getContext('2d');
+var player = new Player();
+var computer = new Computer();
+var ball = new Ball(200,300);
 
 //function to attach canvas to screen when page loads
 window.onload = function() {
@@ -167,9 +170,7 @@ var render = function() {
     }
   }
 
-  var player = new Player();
-  var computer = new Computer();
-  var ball = new Ball(200,300);
+
 
   // #########################################
   // ########### Computer Player #############
