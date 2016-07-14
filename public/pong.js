@@ -117,28 +117,30 @@ Ball.prototype.update = function (paddle1, paddle2) {
     this.x = 395;
     this.x_speed = -this.x_speed;
   }
-// USER PLAYER
-  if(this.y < 0 ) {  // a point was scored
-    counterPlayer = counterPlayer + 1;
-    this.x_speed = 0;
-    this.y_speed = 3;
-    this.x = 200;
-    this.y = 300;
-    console.log(counterPlayer)
-    alert("shits and giggles2");
-    return counterPlayer;
-  }
-// the COMPUTER player
-  if(this.y > 600) {  // a point was scored
-    counterComputer = counterComputer + 1;
-    this.x_speed = 0;
-    this.y_speed = 3;
-    this.x = 200;
-    this.y = 300;
-    console.log(counterComputer)
-    alert("locatz");
-    return counterComputer;
-  }
+  // USER PLAYER
+    if(this.y < 0 ) {  // a point was scored
+      counterPlayer += 1;
+      this.x_speed = 0;
+      this.y_speed = 3;
+      this.x = 200;
+      this.y = 300;
+      console.log(counterPlayer)
+      // alert("shits and giggles2");
+      document.getElementById('.counterPlayer').innerHTML(counterPlayer);
+      return counterPlayer;
+    }
+  // the COMPUTER player
+    if(this.y > 600) {  // a point was scored
+      counterComputer += 1;
+      this.x_speed = 0;
+      this.y_speed = 3;
+      this.x = 200;
+      this.y = 300;
+      console.log(counterComputer)
+      // alert("locatz");
+      document.getElementById('.counterComputer').innerHTML(counterComputer);
+      return counterComputer;
+    }
 
   if(top_y > 300) {
     if(top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y && top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x) {
