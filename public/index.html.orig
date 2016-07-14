@@ -1,17 +1,31 @@
 <html>
   <head>
     <title>Krupong</title>
+<<<<<<< HEAD
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+||||||| merged common ancestors
+    <script src="pong.js"></script>
+=======
     <script src="pong.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
+>>>>>>> master
   </head>
-    <body>
+<<<<<<< HEAD
+  <body>
     <div id="counterComputer">
       0
     </div>
     <div id="counterPlayer">
       0
     </div>
+
+    <script src="pong.js"></script>
+||||||| merged common ancestors
+  <body>
+    
+=======
+    <body>
+>>>>>>> master
 
       <div class="header">
           Krupong
