@@ -27,6 +27,7 @@
 
       var update = function() {
         player.update();
+        computer.update(ball);
         ball.update(player.paddle, computer.paddle);
       };
 
@@ -34,9 +35,9 @@
         for(var key in keysDown) {
           var value = Number(key);
           if(value == 37) {
-            this.paddle.move(-4, 0);
+            this.paddle.move(-6, 0);
           } else if (value == 39) {
-            this.paddle.move(4, 0);
+            this.paddle.move(6, 0);
           } else {
             this.paddle.move(0, 0);
           }
@@ -98,6 +99,22 @@
 
       Computer.prototype.render = function() {
         this.paddle.render();
+      };
+
+      Computer.prototype.update = function(ball) {
+        var x_pos = ball.x;
+        var diff = -((this.paddle.x + (this.paddle.width / 2)) - x_pos);
+        if(diff < 0 && diff < -4) { // max speed left
+          diff = -5;
+        } else if(diff > 0 && diff > 4) { // max speed right
+          diff = 5;
+        }
+        this.paddle.move(diff, 0);
+        if(this.paddle.x < 0) {
+          this.paddle.x = 0;
+        } else if (this.paddle.x + this.paddle.width > 400) {
+          this.paddle.x = 400 - this.paddle.width;
+        }
       };
 
       function Ball(x, y) {
@@ -162,7 +179,6 @@
       window.addEventListener("keyup", function(event) {
         delete keysDown[event.keyCode];
       });
-
 
 
     </script>
