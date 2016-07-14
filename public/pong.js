@@ -14,7 +14,8 @@ var context = canvas.getContext('2d');
 var player = new Player();
 var computer = new Computer();
 var ball = new Ball(200,300);
-
+var counterPlayer = 0;
+var counterComputer = 0;
 var keysDown = {};
 
 //function to attach canvas to screen when page loads
@@ -109,19 +110,34 @@ Ball.prototype.update = function (paddle1, paddle2) {
   var bottom_y = this.y + 5;
 
 // addig collison detection so when the ball hits the paddle shit happens!
-  if(this.x - 5 < 0) {
+  if(this.x - 5 < 0) {          //  left wall
     this.x = 5;
     this.x_speed = -this.x_speed;
-  } else if(this.x + 5 > 400) {
+  } else if(this.x + 5 > 400) {   // right wall
     this.x = 395;
     this.x_speed = -this.x_speed;
   }
-
-  if(this.y < 0 || this.y > 600) {
+// USER PLAYER
+  if(this.y < 0 ) {  // a point was scored
+    counterPlayer = counterPlayer + 1;
     this.x_speed = 0;
     this.y_speed = 3;
     this.x = 200;
     this.y = 300;
+    console.log(counterPlayer)
+    alert("shits and giggles2");
+    return counterPlayer;
+  }
+// the COMPUTER player
+  if(this.y > 600) {  // a point was scored
+    counterComputer = counterComputer + 1;
+    this.x_speed = 0;
+    this.y_speed = 3;
+    this.x = 200;
+    this.y = 300;
+    console.log(counterComputer)
+    alert("locatz");
+    return counterComputer;
   }
 
   if(top_y > 300) {
@@ -173,7 +189,7 @@ Paddle.prototype.move = function(x, y) {
 // ########### Computer Player #############
 // #########################################
 
-Computer.prototype.update =function(ball) {
+Computer.prototype.update = function(ball) {
   var x_pos = ball.x;
   var diff = -((this.paddle.x + (this.paddle.width / 2)) - x_pos);
   if(diff < 0 && diff < -4) {
@@ -188,6 +204,28 @@ Computer.prototype.update =function(ball) {
     this.paddle.x = 400 - this.paddle.width;
   }
 };
+
+// ############################################ score method test
+// ############################################ score method test
+
+// var balloon = $( ".balloon" );
+// var counter = 0;
+//
+// for(var i = 0; i < 5; i++){
+//   var balloon_copy = balloon.clone();
+//   balloon_copy.css({ left: (200*i)});
+//   balloon_copy.appendTo( "body" );
+//
+//   balloon_copy.click(function(){
+//     $(this).remove();
+//
+//     counter = counter + 1;
+//     $('.counter').html(counter);
+//   });
+// };
+
+// ############################################ score method test
+// ############################################ score method test
 
 // adding keyDown object to track key input
   window.addEventListener("keydown", function(event) {
