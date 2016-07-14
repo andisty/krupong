@@ -33,7 +33,7 @@ var step = function() {
 
 var update = function() {
   player.update();
-  // computer.update(ball);
+  computer.update(ball);
   ball.update(player.paddle, computer.paddle);
 };
 
@@ -168,9 +168,10 @@ Paddle.prototype.move = function(x, y) {
     this.x_speed = 0;
   }
 }
-  // #########################################
-  // ########### Computer Player #############
-  // #########################################
+
+// #########################################
+// ########### Computer Player #############
+// #########################################
 
 Computer.prototype.update =function(ball) {
   var x_pos = ball.x;
