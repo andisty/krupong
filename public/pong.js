@@ -124,9 +124,7 @@ Ball.prototype.update = function (paddle1, paddle2) {
       this.y_speed = 3;
       this.x = 200;
       this.y = 300;
-      console.log(counterPlayer)
-      // alert("shits and giggles2");
-      document.getElementById('.counterPlayer').innerHTML(counterPlayer);
+      $('#counterPlayer').html(counterPlayer);
       return counterPlayer;
     }
   // the COMPUTER player
@@ -136,9 +134,7 @@ Ball.prototype.update = function (paddle1, paddle2) {
       this.y_speed = 3;
       this.x = 200;
       this.y = 300;
-      console.log(counterComputer)
-      // alert("locatz");
-      document.getElementById('.counterComputer').innerHTML(counterComputer);
+      $('#counterComputer').html(counterComputer);
       return counterComputer;
     }
 
