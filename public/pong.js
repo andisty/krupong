@@ -165,10 +165,10 @@ Ball.prototype.render = function () {
    }
 };
 
-window.onload = function() {
+//window.onload = function() {
   document.body.appendChild(canvas);
   animate(step);
-};
+//};
 
 
 window.addEventListener("keydown", function(event) {
