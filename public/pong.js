@@ -11,11 +11,12 @@ var height = 400;
 canvas.width = width;
 canvas.height = height;
 var context = canvas.getContext('2d');
-var player = new Player();
-var computer = new Computer();
+var player1 = new Player1();
+var player2 = new Player2();
+var midfieldLine = new MidfieldLine();
 var ball = new Ball(300, 200);
-var counterPlayer = 0;
-var counterComputer = 0;
+var counterPlayer1 = 0;
+var counterPlayer2 = 0;
 var keysDown = {};
 
 //function to attach canvas to screen when page loads
@@ -32,18 +33,24 @@ var step = function() {
   animate(step);
 };
 
+var reset = function () {
+  player1.reset();
+  player2.reset();
+}
+
 var update = function() {
-  player.update();
-  computer.update(ball);
-  ball.update(player.paddle, computer.paddle);
+  player2.update();
+  player1.update();
+  ball.update(player1.paddle, player2.paddle);
 };
 
 // defining color and size of pong playfield
 var render = function() {
   context.fillStyle = "#050404";
   context.fillRect(0,0, width, height);
-  player.render();
-  computer.render();
+  player1.render();
+  player2.render();
+  midfieldLine.render();
   ball.render();
 };
 
@@ -58,25 +65,36 @@ function Paddle(y, x, height, width) {
 }
 
 Paddle.prototype.render = function() {
-  context.fillStyle = "#29f709";
   context.fillRect(this.y, this.x, this.height, this.width);
 };
 
+// defines midfield line
+function MidfieldLine() {
+  this.paddle = new Paddle(298, 0, 4, 400)
+}
+
 // defines default position of player paddle on canvas
-function Player() {
+function Player1() {
   this.paddle = new Paddle(580, 175, 10, 50);
 }
 // defines default position of computer(player) paddle on canvas
-function Computer() {
+function Player2() {
   this.paddle = new Paddle(10, 175, 10, 50);
 }
 
 // To render player and computer paddle on canvas. Using prototype so player and computer inherit properties from paddle object
-Player.prototype.render = function() {
+MidfieldLine.prototype.render = function() {
+  context.fillStyle = "#ffffff"
   this.paddle.render();
 };
 
-Computer.prototype.render = function() {
+Player1.prototype.render = function() {
+  context.fillStyle = "#29f709";
+  this.paddle.render();
+};
+
+Player2.prototype.render = function() {
+  context.fillStyle = "#29f709";
   this.paddle.render();
 };
 
@@ -117,25 +135,27 @@ Ball.prototype.update = function (paddle1, paddle2) {
     this.x = 395;
     this.x_speed = -this.x_speed;
   }
-  // USER PLAYER
+  // USER PLAYER1
     if(this.y < 0 ) {  // a point was scored
-      counterPlayer += 1;
+      counterPlayer1 += 1;
       this.x_speed = 0;
       this.y_speed = 3;
       this.x = 200;
       this.y = 300;
-      $('#counterPlayer').html(counterPlayer);
-      return counterPlayer;
+      $('#counterPlayer1>span').html(counterPlayer1);
+      reset();
+      return counterPlayer1;
     }
-  // the COMPUTER player
+  // user player2
     if(this.y > 600) {  // a point was scored
-      counterComputer += 1;
+      counterPlayer2 += 1;
       this.x_speed = 0;
       this.y_speed = 3;
       this.x = 200;
       this.y = 300;
-      $('#counterComputer').html(counterComputer);
-      return counterComputer;
+      $('#counterPlayer2>span').html(counterPlayer2);
+      reset();
+      return counterPlayer2;
     }
 
   if(top_y > 300) {
@@ -157,12 +177,39 @@ Ball.prototype.update = function (paddle1, paddle2) {
 
   // player update function so when you press key 38 you go up 40 you move down
   // the number -4 and 4 define how fast you paddle will travel when you pres left or right now it moves 4 on the canvas
-Player.prototype.update = function() {
+Player1.prototype.update = function() {
   for(var key in keysDown) {
     var value = Number(key);
-    if(value == 38) {
+    if(value === 38) {
       this.paddle.move(0, -6);
-    } else if (value == 40) {
+    } else if (value === 40) {
+      this.paddle.move(0, 6);
+    } else {
+      this.paddle.move(0, 0);
+    }
+  }
+};
+
+Player1.prototype.reset = function() {
+  // set to initial position
+  this.paddle.y = 580
+  this.paddle.x = 175
+  this.paddle.render()
+}
+
+Player2.prototype.reset = function() {
+  // set to initial position
+  this.paddle.y = 10
+  this.paddle.x = 175
+  this.paddle.render()
+}
+
+Player2.prototype.update = function() {
+  for(var key in keysDown) {
+    var value = Number(key);
+    if(value === 87) {
+      this.paddle.move(0, -6);
+    } else if (value === 83) {
       this.paddle.move(0, 6);
     } else {
       this.paddle.move(0, 0);
@@ -179,8 +226,8 @@ Paddle.prototype.move = function(y, x) {
   if(this.x < 0) { // all the way to the left
     this.x = 0;
     this.x_speed = 0;
-  } else if (this.x + this.height > 400) { // all the way to the right
-    this.x = 400 - this.height;
+  } else if (this.x + this.height > 360) { // all the way to the right
+    this.x = 360 - this.height;
     this.x_speed = 0;
   }
 };
@@ -188,22 +235,22 @@ Paddle.prototype.move = function(y, x) {
 // #########################################
 // ########### Computer Player #############
 // #########################################
-
-Computer.prototype.update = function(ball) {
-  var x_pos = ball.x;
-  var diff = -((this.paddle.x + (this.paddle.width / 2)) - x_pos);
-  if(diff < 0 && diff < -4) {
-    diff = -5;
-  } else if (diff > 0 && diff > 4) {
-    diff = 5;
-  }
-  this.paddle.move(0, diff);
-  if(this.paddle.x < 0) {
-    this.paddle.x = 0;
-  } else if (this.paddle.x + this.paddle.height > 400) {
-    this.paddle.x = 400 - this.paddle.height;
-  }
-};
+//
+// Computer.prototype.update = function(ball) {
+//   var x_pos = ball.x;
+//   var diff = -((this.paddle.x + (this.paddle.width / 2)) - x_pos);
+//   if(diff < 0 && diff < -4) {
+//     diff = -5;
+//   } else if (diff > 0 && diff > 4) {
+//     diff = 5;
+//   }
+//   this.paddle.move(0, diff);
+//   if(this.paddle.x < 0) {
+//     this.paddle.x = 0;
+//   } else if (this.paddle.x + this.paddle.height > 400) {
+//     this.paddle.x = 400 - this.paddle.height;
+//   }
+// };
 
 // ############################################ score method test
 // ############################################ score method test
