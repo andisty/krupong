@@ -55,17 +55,17 @@ var render = function() {
 };
 
 // Players object, paddle so we can render it
-function Paddle(y, x, height, width) {
-  this.y = y;
+function Paddle(x, y, width, height) {
   this.x = x;
-  this.height = height;
+  this.y = y;
   this.width = width;
-  this.y_speed = 0;
+  this.height = height;
   this.x_speed = 0;
+  this.y_speed = 0;
 }
 
 Paddle.prototype.render = function() {
-  context.fillRect(this.y, this.x, this.height, this.width);
+  context.fillRect(this.x, this.y, this.width, this.height);
 };
 
 // defines midfield line
@@ -99,17 +99,17 @@ Player2.prototype.render = function() {
 };
 
 // defining ball object props. x and y are representing center of circle.
-function Ball(y, x) {
-  this.y = y;
+function Ball(x, y) {
   this.x = x;
-  this.y_speed = 3;
-  this.x_speed = 0;
+  this.y = y;
+  this.x_speed = 3;
+  this.y_speed = 0;
   this.radius = 5;
 }
 // Once again prototype to inherit above defined Ball props
 Ball.prototype.render = function() {
   context.beginPath();
-  context.arc(this.y, this.x, this.radius, 2 * Math.PI, false);
+  context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
   context.fillStyle = "#29f709";
   context.fill();
 };
@@ -120,57 +120,57 @@ Ball.prototype.render = function() {
 
 // adding update method to ball so it can move(animate) towards player
 Ball.prototype.update = function (paddle1, paddle2) {
-  this.y += this.y_speed;
   this.x += this.x_speed;
-  var top_y = this.y - 5;
+  this.y += this.y_speed;
   var top_x = this.x - 5;
-  var bottom_y = this.y + 5;
+  var top_y = this.y - 5;
   var bottom_x = this.x + 5;
+  var bottom_y = this.y + 5;
 
 // addig collison detection so when the ball hits the paddle shit happens!
-  if(this.x - 5 < 0) { // hitting the left wall
-    this.x = 5;
-    this.x_speed = -this.x_speed;
-  } else if(this.x + 5 > 400) { // hitting the right wall
-    this.x = 395;
-    this.x_speed = -this.x_speed;
+  if(this.y - 5 < 0) { // hitting the left wall
+    this.y = 5;
+    this.y_speed = -this.y_speed;
+  } else if(this.y + 5 > 400) { // hitting the right wall
+    this.y = 395;
+    this.y_speed = -this.y_speed;
   }
   // USER PLAYER1
-    if(this.y < 0 ) {  // a point was scored
+    if(this.x < 0 ) {  // a point was scored
       counterPlayer1 += 1;
-      this.x_speed = 0;
-      this.y_speed = 3;
-      this.x = 200;
-      this.y = 300;
+      this.y_speed = 0;
+      this.x_speed = 3;
+      this.y = 200;
+      this.x = 300;
       $('#counterPlayer1>span').html(counterPlayer1);
       reset();
       return counterPlayer1;
     }
   // user player2
-    if(this.y > 600) {  // a point was scored
+    if(this.x > 600) {  // a point was scored
       counterPlayer2 += 1;
-      this.x_speed = 0;
-      this.y_speed = 3;
-      this.x = 200;
-      this.y = 300;
+      this.y_speed = 0;
+      this.x_speed = 3;
+      this.y = 200;
+      this.x = 300;
       $('#counterPlayer2>span').html(counterPlayer2);
       reset();
       return counterPlayer2;
     }
 
-  if(top_y > 300) {
-    if(top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y && top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x) {
+  if(top_x > 300) {
+    if(top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x && top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y) {
       // hit the player's paddle
-      this.y_speed = -3;
-      this.x_speed += (paddle1.x_speed / 2);
-      this.y += this.y_speed;
+      this.y_speed += (paddle1.y_speed / 2);
+      this.x_speed = -3;
+      this.x += this.x_speed;
     }
   } else {
-    if(top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y && top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x) {
+    if(top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x && top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y) {
       // hit the computer's paddle
-      this.y_speed = 3;
-      this.x_speed += (paddle2.x_speed / 2);
-      this.y += this.y_speed;
+      this.y_speed += (paddle2.y_speed / 2);
+      this.x_speed = 3;
+      this.x += this.x_speed;
     }
   }
 };
@@ -192,15 +192,15 @@ Player1.prototype.update = function() {
 
 Player1.prototype.reset = function() {
   // set to initial position
-  this.paddle.y = 580
-  this.paddle.x = 175
+  this.paddle.x = 580
+  this.paddle.y = 175
   this.paddle.render()
 }
 
 Player2.prototype.reset = function() {
   // set to initial position
-  this.paddle.y = 10
-  this.paddle.x = 175
+  this.paddle.x = 10
+  this.paddle.y = 175
   this.paddle.render()
 }
 
@@ -218,17 +218,17 @@ Player2.prototype.update = function() {
 };
 
 // paddle move function so when player pressed above defined keys the paddle moves 4 on the canvas
-Paddle.prototype.move = function(y, x) {
+Paddle.prototype.move = function(x, y) {
   this.x += x;
   this.y += y;
   this.x_speed = x;
   this.y_speed = y;
-  if(this.x < 0) { // all the way to the left
-    this.x = 0;
-    this.x_speed = 0;
-  } else if (this.x + this.height > 360) { // all the way to the right
-    this.x = 360 - this.height;
-    this.x_speed = 0;
+  if(this.y < 0) { // all the way to the left
+    this.y = 0;
+    this.y_speed = 0;
+  } else if (this.y + this.width > 360) { // all the way to the right
+    this.y = 360 - this.width;
+    this.y_speed = 0;
   }
 };
 
